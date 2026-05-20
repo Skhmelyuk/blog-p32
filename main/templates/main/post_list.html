@@ -1,11 +1,92 @@
-{% extends 'main/base.html' %} <!-- Кажемо Django взяти за основу main/base.html -->
-
-{% block title %}Список статей - Блог{% endblock %}
+{% extends 'main/base.html' %}
+{% block title %}
+  {% if current_category %}{{ current_category.name }} - InspireBlog{% else %}Всі пости - InspireBlog{% endif %}
+{% endblock %}
 
 {% block content %}
-    <h1>Наші статті</h1>
-    {% for post in posts %}
-        <h2>{{ post.title }}</h2>
-        <p>{{ post.content }}</p>
-    {% endfor %}
+<div class="list-header">
+  <h1 class="posts-title">
+    {% if current_category %}
+      <span class="title-label">Категорія</span>
+      <span class="title-value">{{ current_category.name }}</span>
+    {% else %}
+      <span class="title-value">Останні публікації</span>
+    {% endif %}
+  </h1>
+
+  <div class="sort-container">
+    <span class="sort-label">Сортувати:</span>
+    <div class="sort-buttons">
+      <a href="?sort=new" class="sort-btn {% if current_sort == 'new' %}active{% endif %}">
+        <span class="material-symbols-outlined btn-icon">schedule</span>
+        <span>Нові</span>
+      </a>
+      <a href="?sort=old" class="sort-btn {% if current_sort == 'old' %}active{% endif %}">
+        <span class="material-symbols-outlined btn-icon">history</span>
+        <span>Старі</span>
+      </a>
+      <a href="?sort=popular" class="sort-btn {% if current_sort == 'popular' %}active{% endif %}">
+        <span class="material-symbols-outlined btn-icon">trending_up</span>
+        <span>Популярні</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="posts-grid">
+  {% for post in posts %}
+  <article class="post-card">
+    <div class="card-image-wrapper">
+      {% if post.image %}
+        <img src="{{ post.image.url }}" alt="{{ post.title }}" class="card-img" />
+      {% else %}
+        <!-- Fallback premium gradient image if no image uploaded -->
+        <div class="card-img-placeholder">
+          <span class="material-symbols-outlined">image</span>
+        </div>
+      {% endif %}
+      <a href="{% url 'main:post_list_by_category' post.category.slug %}" class="card-badge">
+        {{ post.category.name }}
+      </a>
+    </div>
+    
+    <div class="card-body">
+      <h2 class="card-title">
+        <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+      </h2>
+      <p class="card-excerpt">{{ post.content|truncatewords:20 }}</p>
+      
+      <div class="card-meta">
+        <div class="meta-row">
+          <span class="meta-info">
+            <span class="material-symbols-outlined meta-icon">person</span>
+            <span>{{ post.author.get_full_name|default:post.author.username }}</span>
+          </span>
+          <span class="meta-info">
+            <span class="material-symbols-outlined meta-icon">calendar_today</span>
+            <span>{{ post.created_at|date:"d.m.Y" }}</span>
+          </span>
+        </div>
+        <div class="meta-row-bottom">
+          <span class="meta-info">
+            <span class="material-symbols-outlined meta-icon">visibility</span>
+            <span>{{ post.views }} переглядів</span>
+          </span>
+          <a href="{{ post.get_absolute_url }}" class="read-more-link">
+            <span>Читати</span>
+            <span class="material-symbols-outlined arrow-icon">arrow_forward</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </article>
+  {% empty %}
+  <div class="no-posts-container">
+    <span class="material-symbols-outlined empty-icon">feed</span>
+    <h3>Публікацій не знайдено</h3>
+    <p>Спробуйте обрати іншу категорію або завітайте пізніше.</p>
+    <a href="{% url 'main:post_list' %}" class="btn-primary">Повернутися на головну</a>
+  </div>
+  {% endfor %}
+</div>
 {% endblock %}

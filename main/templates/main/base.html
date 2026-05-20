@@ -1,22 +1,60 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="uk">
-<head>
-    <meta charset="UTF-8">
-    <title>{% block title %}Мій Блог{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    <header>
-        <nav>Головна | Про нас | Контакти</nav>
-    </header>
-    <main>
-        {% block content %}
-        {% endblock %}
-    </main>
-    <footer>
-        <p>© 2026 Всі права захищено</p>
-    </footer>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}InspireBlog{% endblock %}</title>
+    <!-- Google Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <div class="app-container">
+      <header class="header">
+        <div class="header-inner">
+          <a href="{% url 'main:post_list' %}" class="logo">
+            <span class="logo-accent">⚡</span>
+            <span class="logo-text">Inspire<span class="logo-sub">Blog</span></span>
+          </a>
+          
+          <nav class="nav">
+            <ul class="nav-list">
+              <li>
+                <a href="{% url 'main:post_list' %}" class="nav-item {% if not current_category %}active{% endif %}">
+                  <span class="material-symbols-outlined nav-icon">apps</span>
+                  <span>Всі пости</span>
+                </a>
+              </li>
+              {% for cat in all_categories %}
+              <li>
+                <a href="{% url 'main:post_list_by_category' cat.slug %}" class="nav-item {% if current_category.id == cat.id %}active{% endif %}">
+                  <span class="material-symbols-outlined nav-icon">folder_open</span>
+                  <span>{{ cat.name }}</span>
+                </a>
+              </li>
+              {% endfor %}
+            </ul>
+          </nav>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <div class="content-wrapper">
+          {% block content %}{% endblock %}
+        </div>
+      </main>
+
+      <footer class="footer">
+        <div class="footer-inner">
+          <div class="footer-brand">
+            <span class="logo-accent">⚡</span> InspireBlog
+          </div>
+          <p class="copyright">&copy; {% now "Y" %} Всі права захищені. Створено на Django.</p>
+        </div>
+      </footer>
+    </div>
+  </body>
 </html>
