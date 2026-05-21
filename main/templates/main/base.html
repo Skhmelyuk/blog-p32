@@ -45,6 +45,32 @@
                         {% endfor %}
                     </ul>
                 </nav>
+                <div class="auth-buttons">
+                    {% if user.is_authenticated %}
+                    {% if user.is_staff %}
+                    <a href="{% url 'admin:index' %}" class="btn-auth btn-admin">
+                        <span class="material-symbols-outlined">admin_panel_settings</span>
+                        <span>Адмін</span>
+                    </a>
+                    {% endif %}
+                    <a href="{% url 'accounts:profile' %}" class="btn-auth btn-profile">
+                        <span class="material-symbols-outlined">account_circle</span>
+                        <span>{{ user.username }}</span>
+                    </a>
+                    <a href="{% url 'accounts:logout' %}" class="btn-auth btn-logout">
+                        <span class="material-symbols-outlined">logout</span>
+                        <span>Вийти</span>
+                    </a>
+                    {% else %}
+                    <a href="{% url 'accounts:login' %}" class="btn-auth btn-login">
+                        <span class="material-symbols-outlined">login</span>
+                        <span>Вхід</span>
+                    </a>
+                    <a href="{% url 'accounts:register' %}" class="btn-primary btn-register">
+                        <span>Реєстрація</span>
+                    </a>
+                    {% endif %}
+                </div>
             </div>
         </header>
 
