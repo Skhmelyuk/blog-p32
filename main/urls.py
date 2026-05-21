@@ -1,3 +1,4 @@
+# pyrefly: ignore [missing-import]
 from django.urls import path
 from . import views
 
@@ -7,6 +8,4 @@ urlpatterns = [
     path('', views.post_list, name="post_list"),
     path('posts/<slug:category_slug>/', views.post_list, name="post_list_by_category"),
     path('post/<int:id>/<slug:slug>/', views.post_detail, name="post_detail"),
- 
-
 ]
