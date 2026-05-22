@@ -1,0 +1,49 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Профіль користувача - InspireBlog{% endblock %}
+
+{% block content %}
+<div class="profile-card">
+    <div class="profile-avatar-section">
+        <div class="profile-avatar-placeholder">
+            <span class="material-symbols-outlined">account_circle</span>
+        </div>
+        <div class="profile-username">{{ user.username }}</div>
+        {% if user.is_staff %}
+        <div class="profile-role">Адміністратор</div>
+        {% else %}
+        <div class="profile-role">Користувач</div>
+        {% endif %}
+    </div>
+
+    <div class="profile-details">
+        <div class="detail-row">
+            <span class="detail-label">Ім'я користувача</span>
+            <span class="detail-value">{{ user.username }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Email адреса</span>
+            <span class="detail-value">{{ user.email|default:"Не вказано" }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Дата реєстрації</span>
+            <span class="detail-value">{{ user.date_joined|date:"d.m.Y H:i" }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Останній вхід</span>
+            <span class="detail-value">{{ user.last_login|date:"d.m.Y H:i" }}</span>
+        </div>
+    </div>
+
+    <div class="profile-actions">
+        <a href="{% url 'main:post_list' %}" class="btn-secondary">
+            <span class="material-symbols-outlined">arrow_back</span>
+            <span>До списку постів</span>
+        </a>
+        <a href="{% url 'accounts:logout' %}" class="btn-danger">
+            <span class="material-symbols-outlined">logout</span>
+            <span>Вийти з акаунту</span>
+        </a>
+    </div>
+</div>
+{% endblock %}
