@@ -1135,3 +1135,118 @@ ul {
   font-size: 0.85rem !important;
   cursor: pointer;
 }
+
+/* ==========================================================================
+   Custom Tags & Filters Styles (Lesson 11)
+   ========================================================================== */
+
+/* Reading time badge */
+.reading-time-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background-color: var(--border-light);
+  color: var(--text-muted);
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid var(--border);
+}
+
+/* Latest posts widget styling */
+.latest-posts-widget {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  margin-top: 2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.widget-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--primary-light);
+  padding-bottom: 0.5rem;
+}
+
+.widget-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.widget-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.widget-item-meta {
+  font-size: 0.75rem;
+  color: var(--text-light);
+}
+
+.widget-link {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-main);
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+
+.widget-link:hover {
+  color: var(--primary);
+}
+
+/* Share buttons box */
+.share-box {
+  background-color: var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin: 2rem 0;
+  border: 1px solid var(--border);
+}
+
+.share-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--text-main);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.share-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--radius-full);
+  color: var(--text-white);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+
+.share-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+}
+
+.share-btn.telegram { background-color: #0088cc; }
+.share-btn.facebook { background-color: #1877f2; }
+.share-btn.twitter { background-color: #1da1f2; }

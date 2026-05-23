@@ -1,4 +1,4 @@
-{% load static %}
+{% load static blog_tags %}
 <!DOCTYPE html>
 <html lang="uk">
 
@@ -45,31 +45,38 @@
                         {% endfor %}
                     </ul>
                 </nav>
-                <div class="auth-buttons">
-                    {% if user.is_authenticated %}
-                    {% if user.is_staff %}
-                    <a href="{% url 'admin:index' %}" class="btn-auth btn-admin">
-                        <span class="material-symbols-outlined">admin_panel_settings</span>
-                        <span>Адмін</span>
-                    </a>
-                    {% endif %}
-                    <a href="{% url 'accounts:profile' %}" class="btn-auth btn-profile">
-                        <span class="material-symbols-outlined">account_circle</span>
-                        <span>{{ user.username }}</span>
-                    </a>
-                    <a href="{% url 'accounts:logout' %}" class="btn-auth btn-logout">
-                        <span class="material-symbols-outlined">logout</span>
-                        <span>Вийти</span>
-                    </a>
-                    {% else %}
-                    <a href="{% url 'accounts:login' %}" class="btn-auth btn-login">
-                        <span class="material-symbols-outlined">login</span>
-                        <span>Вхід</span>
-                    </a>
-                    <a href="{% url 'accounts:register' %}" class="btn-primary btn-register">
-                        <span>Реєстрація</span>
-                    </a>
-                    {% endif %}
+                <!-- Блок авторизації із використанням кастомних тегів -->
+                <div class="auth-box-wrapper" style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.25rem;">
+                    <span class="greeting-text" style="font-size: 0.8rem; color: var(--text-muted); font-weight: 500;">
+                        {% time_of_day_greeting %}, {% welcome_user %}
+                    </span>
+                    
+                    <div class="auth-buttons">
+                        {% if user.is_authenticated %}
+                        {% if user.is_staff %}
+                        <a href="{% url 'admin:index' %}" class="btn-auth btn-admin">
+                            <span class="material-symbols-outlined">admin_panel_settings</span>
+                            <span>Адмін</span>
+                        </a>
+                        {% endif %}
+                        <a href="{% url 'accounts:profile' %}" class="btn-auth btn-profile">
+                            <span class="material-symbols-outlined">account_circle</span>
+                            <span>{{ user.username }}</span>
+                        </a>
+                        <a href="{% url 'accounts:logout' %}" class="btn-auth btn-logout">
+                            <span class="material-symbols-outlined">logout</span>
+                            <span>Вийти</span>
+                        </a>
+                        {% else %}
+                        <a href="{% url 'accounts:login' %}" class="btn-auth btn-login">
+                            <span class="material-symbols-outlined">login</span>
+                            <span>Вхід</span>
+                        </a>
+                        <a href="{% url 'accounts:register' %}" class="btn-primary btn-register">
+                            <span>Реєстрація</span>
+                        </a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </header>

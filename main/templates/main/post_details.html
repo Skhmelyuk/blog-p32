@@ -1,4 +1,5 @@
 {% extends 'main/base.html' %}
+{% load blog_filters blog_tags %}
 
 {% block title %}{{ post.title }} - InspireBlog{% endblock %}
 
@@ -22,7 +23,11 @@
       </span>
       <span class="meta-item">
         <span class="material-symbols-outlined meta-icon">visibility</span>
-        <span>{{ post.views }} переглядів</span>
+        <span>{{ post.views|uk_plural:"перегляд,перегляди,переглядів" }}</span>
+      </span>
+      <span class="meta-item">
+        <span class="material-symbols-outlined meta-icon">schedule</span>
+        <span>Час читання: {{ post.content|reading_time }}</span>
       </span>
     </div>
   </div>
@@ -35,6 +40,9 @@
 
   <div class="post-detail-content">
     {{ post.content|linebreaks }}
+    
+    <!-- Кнопки поширення з Inclusion Tag з контекстом -->
+    {% show_share_buttons post.title %}
   </div>
 
   <div class="post-detail-footer">

@@ -1,0 +1,24 @@
+<!-- main/templates/main/components/share_buttons.html -->
+<div class="share-box">
+  <h4 class="share-title">Поділитися матеріалом:</h4>
+  <div class="share-buttons">
+    <a href="https://t.me/share/url?url={{ share_url }}&text={{ share_title }}" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="share-btn telegram">
+      <span class="share-icon">✈️</span> Telegram
+    </a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u={{ share_url }}" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="share-btn facebook">
+      <span class="share-icon">👥</span> Facebook
+    </a>
+    <a href="https://twitter.com/intent/tweet?url={{ share_url }}&text={{ share_title }}" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="share-btn twitter">
+      <span class="share-icon">🐦</span> Twitter
+    </a>
+  </div>
+</div>
