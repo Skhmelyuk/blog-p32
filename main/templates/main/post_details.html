@@ -1,20 +1,24 @@
-{% extends 'main/base.html' %}
-
-{% block title %}{{ post.title }} - InspireBlog{% endblock %}
-
+{% extends 'main/base.html' %} 
+{% load blog_filters blog_tags %} 
+{% block title%}{{ post.title }} - InspireBlog{% endblock %}
 {% block content %}
 <article class="post-detail">
   <div class="post-detail-header">
-    <a href="{% url 'main:post_list_by_category' post.category.slug %}" class="detail-category-badge">
+    <a
+      href="{% url 'main:post_list_by_category' post.category.slug %}"
+      class="detail-category-badge"
+    >
       {{ post.category.name }}
     </a>
-    
+
     <h1 class="post-detail-title">{{ post.title }}</h1>
-    
+
     <div class="post-detail-meta">
       <span class="meta-item">
         <span class="material-symbols-outlined meta-icon">person</span>
-        <span>{{ post.author.get_full_name|default:post.author.username }}</span>
+        <span
+          >{{ post.author.get_full_name|default:post.author.username }}</span
+        >
       </span>
       <span class="meta-item">
         <span class="material-symbols-outlined meta-icon">calendar_today</span>
@@ -22,25 +26,33 @@
       </span>
       <span class="meta-item">
         <span class="material-symbols-outlined meta-icon">visibility</span>
-        <span>{{ post.views }} переглядів</span>
+        <span>{{ post.views|uk_plural:"перегляд,перегляди,переглядів" }}</span>
+      </span>
+      <span class="meta-item">
+        <span class="material-symbols-outlined meta-icon">schedule</span>
+        <span>Час читання: {{ post.content|reading_time }}</span>
       </span>
     </div>
   </div>
 
   {% if post.image %}
   <div class="post-detail-image-wrapper">
-    <img src="{{ post.image.url }}" alt="{{ post.title }}" class="post-detail-img" />
+    <img
+      src="{{ post.image.url }}"
+      alt="{{ post.title }}"
+      class="post-detail-img"
+    />
   </div>
   {% endif %}
 
-  <div class="post-detail-content">
-    {{ post.content|linebreaks }}
-  </div>
+  <div class="post-detail-content">{{ post.content|linebreaks }}</div>
 
   <div class="post-detail-footer">
     <div class="post-updated-info">
       <span class="material-symbols-outlined update-icon">update</span>
-      <span class="post-updated">Оновлено: {{ post.updated_at|date:"d.m.Y H:i" }}</span>
+      <span class="post-updated"
+        >Оновлено: {{ post.updated_at|date:"d.m.Y H:i" }}</span
+      >
     </div>
     <a href="{% url 'main:post_list' %}" class="back-btn">
       <span class="material-symbols-outlined btn-icon">arrow_back</span>
@@ -54,17 +66,17 @@
   <h2 class="related-title">
     <span class="title-accent"></span> Схожі публікації
   </h2>
-  
+
   <div class="related-grid">
     {% for related in related_posts %}
     <article class="related-card">
       <div class="related-image-wrapper">
         {% if related.image %}
-          <img src="{{ related.image.url }}" alt="{{ related.title }}" />
+        <img src="{{ related.image.url }}" alt="{{ related.title }}" />
         {% else %}
-          <div class="related-img-placeholder">
-            <span class="material-symbols-outlined">image</span>
-          </div>
+        <div class="related-img-placeholder">
+          <span class="material-symbols-outlined">image</span>
+        </div>
         {% endif %}
       </div>
       <div class="related-body">
@@ -74,12 +86,13 @@
         <p class="related-excerpt">{{ related.content|truncatewords:12 }}</p>
         <a href="{{ related.get_absolute_url }}" class="related-link">
           <span>Читати далі</span>
-          <span class="material-symbols-outlined arrow-icon">arrow_forward</span>
+          <span class="material-symbols-outlined arrow-icon"
+            >arrow_forward</span
+          >
         </a>
       </div>
     </article>
     {% endfor %}
   </div>
 </section>
-{% endif %}
-{% endblock %}
+{% endif %} {% endblock %}

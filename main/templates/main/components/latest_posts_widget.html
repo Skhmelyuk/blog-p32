@@ -1,0 +1,17 @@
+<div class="widget latest-posts-widget">
+  <h3 class="widget-title">⚡ Останні публікації</h3>
+  <ul class="widget-list">
+    {% for post in latest_posts %}
+    <li class="widget-item">
+      <div class="widget-item-meta">
+        <span class="widget-date">{{ post.created_at|date:"d.m.Y" }}</span>
+      </div>
+      <a href="{{ post.get_absolute_url }}" class="widget-link"
+        >{{ post.title }}</a
+      >
+    </li>
+    {% empty %}
+    <li class="widget-empty">Немає свіжих публікацій</li>
+    {% endfor %}
+  </ul>
+</div>
