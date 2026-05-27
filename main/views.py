@@ -1,7 +1,9 @@
-
-# pyrefly: ignore [missing-import]
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post, Category
+from .forms import PostForm, ContactForm
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 
 
 def post_list(request, category_slug=None):
@@ -51,6 +53,69 @@ def post_detail(request, id, slug):
         'current_category': post.category,
         "categories": categories,
     })
+
+@login_required(login_url='accounts:login')
+def post_create(request):
+        # Перевіряємо, чи є авторизований користувач адміністратором (суперкористувачем)
+    if not request.user.is_superuser:
+        raise PermissionDenied("У вас немає прав для створення публікації.")
+
+    categories = Category.objects.all()
+
+    if request.method == 'POST':
+        # Передаємо POST-дані та завантажені файли (FILES) у форму
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            # Зберігаємо об'єкт у пам'яті, але не записуємо в БД відразу (commit=False)
+            post = form.save(commit=False)
+            # Призначаємо поточного користувача автором поста
+            post.author = request.user
+            # Тепер остаточно зберігаємо запис у базу даних
+            post.save()
+            # Перенаправляємо на детальну сторінку новоствореного поста
+            return redirect(post.get_absolute_url())
+    else:
+        # При GET-запиті ініціалізуємо порожню форму
+        form = PostForm()
+
+    return render(request, 'main/post_create.html', {
+        'form': form,
+        'categories': categories,
+        'title': 'Створення публікації'
+    })
+
+
+def contact_view(request):
+    categories = Category.objects.all()
+
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            # Отримуємо валідовані дані з форми
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            subject = form.cleaned_data['subject']
+            message_text = form.cleaned_data['message']
+            
+            # Тут за потреби можна реалізувати надсилання листа на email адміна за допомогою send_mail()
+            # Наприклад:
+            # from django.core.mail import send_mail
+            # send_mail(f"Тема: {subject}", f"Від: {name} ({email})\n\n{message_text}", email, ['admin@blog.com'])
+
+            # Додаємо сповіщення про успіх у сесію користувача
+            messages.success(request, "Дякуємо! Ваше повідомлення успішно надіслано. Ми зв'яжемося з вами найближчим часом.")
+            
+            # Перенаправляємо користувача назад на порожню форму
+            return redirect('main:contact')
+    else:
+        form = ContactForm()
+
+    return render(request, 'main/contact.html', {
+        'form': form,
+        'categories': categories,
+        'title': 'Контакти'
+    })
+
 
     
 

@@ -1,0 +1,14 @@
+{% extends 'main/base.html' %}
+
+{% block title %}403 - Доступ заборонено{% endblock %}
+
+{% block content %}
+<div class="error-container" style="text-align: center; padding: 4rem 2rem;">
+    <h1 style="font-size: 4rem; font-weight: 700; color: var(--danger); margin-bottom: 1rem;">403</h1>
+    <h2 style="font-size: 1.5rem; color: var(--text-muted); margin-bottom: 2rem;">Доступ заборонено</h2>
+    <p style="color: var(--text-main); margin-bottom: 2rem;">Ви не маєте прав для перегляду цієї сторінки.</p>
+    <a href="{% url 'main:post_list' %}" class="btn-primary" style="display: inline-block; padding: 1rem 2rem; border-radius: var(--radius-md); text-decoration: none; color: #fff; font-weight: 600;">
+        Повернутися на головну
+    </a>
+</div>
+{% endblock %}

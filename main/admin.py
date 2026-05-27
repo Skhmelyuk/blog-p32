@@ -1,9 +1,5 @@
-
-
-# pyrefly: ignore [missing-import]
 from django.contrib import admin
 from .models import Post, Category
-# pyrefly: ignore [missing-import]
 from django.utils.html import format_html
 
 

@@ -13,6 +13,12 @@
       <span class="title-value">{{ current_category.name }}</span>
     {% else %}
       <span class="title-value">Останні публікації</span>
+      {% if user.is_authenticated and user.is_superuser %}
+        <a href="{% url 'main:post_create' %}" class="nav-item">
+          <span class="material-symbols-outlined btn-icon">add_circle</span>
+          <span>Створити пост</span>
+        </a>
+      {% endif %}
     {% endif %}
   </h1>
 

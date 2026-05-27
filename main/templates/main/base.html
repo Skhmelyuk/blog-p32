@@ -31,7 +31,7 @@
               <li>
                 <a
                   href="{% url 'main:post_list' %}"
-                  class="nav-item {% if not current_category %}active{% endif %}"
+                  class="nav-item {% if not current_category and request.resolver_match.url_name != 'contact' %}active{% endif %}"
                 >
                   <span class="material-symbols-outlined nav-icon">apps</span>
                   <span>Всі пости</span>
@@ -120,6 +120,13 @@
           <div class="footer-brand">
             <span class="logo-accent">⚡</span> InspireBlog
           </div>
+          
+          <div class="footer-links">
+            <a href="{% url 'main:contact' %}" style="color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: var(--transition-fast);" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'">
+              Контакти
+            </a>
+          </div>
+
           <p class="copyright">
             &copy; {% now "Y" %} Всі права захищені. Створено на Django.
           </p>
