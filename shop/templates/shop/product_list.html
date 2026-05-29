@@ -1,0 +1,56 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Магазин товарів - InspireBlog{% endblock %}
+
+{% block content %}
+<div class="products-container" style="max-width: 1200px; margin: 2rem auto; padding: 0 1rem;">
+    <div class="list-header" style="margin-bottom: 2rem;">
+        <h1 style="font-size: 2.25rem; font-weight: 800; color: var(--text-main);">🛒 Наші Товари</h1>
+        <p style="color: var(--text-muted);">Знайдіть найкращі пропозиції від InspireBlog</p>
+    </div>
+
+    {% if products %}
+        <div class="products-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem;">
+            {% for product in products %}
+                <div class="product-card" style="background-color: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border); box-shadow: var(--shadow-sm); overflow: hidden; display: flex; flex-direction: column; transition: var(--transition);">
+                    
+                    <!-- Зображення товару -->
+                    <div class="product-image-wrapper" style="height: 200px; overflow: hidden; position: relative; background-color: var(--border-light);">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 100%; height: 100%; object-fit: cover;">
+                        {% else %}
+                            <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--text-light); font-size: 3rem;">
+                                📦
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Тіло картки товару -->
+                    <div class="product-body" style="padding: 1.5rem; display: flex; flex-direction: column; flex-grow: 1; gap: 0.75rem;">
+                        <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--text-main); margin: 0;">{{ product.name }}</h3>
+                        
+                        <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; margin: 0; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                            {{ product.description }}
+                        </p>
+                        
+                        <div class="product-footer" style="margin-top: auto; display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border-light);">
+                            <span style="font-size: 1.25rem; font-weight: 800; color: var(--primary);">{{ product.price }} грн</span>
+                            <!-- Перехід на детальну сторінку товару -->
+                            <a href="{{ product.get_absolute_url }}" class="btn-primary" style="text-decoration: none; padding: 0.5rem 1.2rem; border-radius: var(--radius-full); font-size: 0.85rem; font-weight: 700;">
+                                Детальніше
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <!-- Повідомлення про відсутність товарів -->
+        <div class="no-posts-container">
+            <span class="empty-icon">📦</span>
+            <h3>Товарів поки немає</h3>
+            <p>Адміністрація ще не додала жодного товару до каталогу.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

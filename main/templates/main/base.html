@@ -121,7 +121,10 @@
             <span class="logo-accent">⚡</span> InspireBlog
           </div>
           
-          <div class="footer-links">
+          <div class="footer-links" style="display: flex; gap: 1.5rem;">
+            <a href="{% url 'shop:product_list' %}" style="color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: var(--transition-fast);" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'">
+              Товари
+            </a>
             <a href="{% url 'main:contact' %}" style="color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: var(--transition-fast);" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'">
               Контакти
             </a>
