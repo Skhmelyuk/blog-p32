@@ -4,6 +4,7 @@ from .forms import PostForm, ContactForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
+from django.core.mail import send_mail
 
 
 def post_list(request, category_slug=None):
@@ -97,16 +98,38 @@ def contact_view(request):
             subject = form.cleaned_data['subject']
             message_text = form.cleaned_data['message']
             
-            # Тут за потреби можна реалізувати надсилання листа на email адміна за допомогою send_mail()
-            # Наприклад:
-            # from django.core.mail import send_mail
-            # send_mail(f"Тема: {subject}", f"Від: {name} ({email})\n\n{message_text}", email, ['admin@blog.com'])
-
-            # Додаємо сповіщення про успіх у сесію користувача
-            messages.success(request, "Дякуємо! Ваше повідомлення успішно надіслано. Ми зв'яжемося з вами найближчим часом.")
+            # Формуємо вміст листа для адміністратора
+            email_subject = f"Нове повідомлення: {subject}"
+            email_message = f"Отримано нове звернення через контактну форму сайту.\n\n" \
+                            f"Від кого: {name}\n" \
+                            f"Email відправника: {email}\n\n" \
+                            f"Текст повідомлення:\n{message_text}"
             
-            # Перенаправляємо користувача назад на порожню форму
-            return redirect('main:contact')
+            # Спроба надіслати лист
+            try:
+                send_mail(
+                    subject=email_subject,
+                    message=email_message,
+                    from_email=email,  # Email відправника (або DEFAULT_FROM_EMAIL)
+                    recipient_list=['skhmelyuk1985@gmail.com'],  # Введіть реальну пошту адміністратора
+                    fail_silently=False,
+                )
+                
+        
+                messages.success(
+                    request, 
+                    "Дякуємо! Ваше повідомлення успішно надіслано на пошту адміністратора."
+                )
+                return redirect('main:contact')
+                
+            except Exception as e:
+                # Обробка помилки у разі проблем зі зв'язком/сервером
+                messages.error(
+                    request, 
+                    "Виникла помилка при відправленні листа. Будь ласка, спробуйте пізніше."
+                )
+                # Також можна вивести помилку в логи для діагностики:
+                print(f"Помилка відправлення пошти: {e}")
     else:
         form = ContactForm()
 
