@@ -75,6 +75,12 @@
             </span>
 
             <div class="auth-buttons">
+              <!-- Кнопка кошика -->
+              <a href="{% url 'shop:cart_detail' %}" class="btn-auth" style="background-color: var(--primary-light); color: var(--primary); border-color: var(--primary-light); font-weight: 700; text-decoration: none;">
+                <span class="material-symbols-outlined">shopping_cart</span>
+                <span>Кошик ({{ cart|length }})</span>
+              </a>
+
               {% if user.is_authenticated %} {% if user.is_staff %}
               <a href="{% url 'admin:index' %}" class="btn-auth btn-admin">
                 <span class="material-symbols-outlined"

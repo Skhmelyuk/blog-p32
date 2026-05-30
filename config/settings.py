@@ -65,6 +65,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'shop.context_processors.cart',
             ],
         },
     },
@@ -148,3 +149,7 @@ EMAIL_HOST_USER = "skhmelyuk1985@gmail.com"
 EMAIL_HOST_PASSWORD = "fple rybr zcsi aiai"
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# Налаштування кошика
+CART_SESSION_ID = 'cart'
+

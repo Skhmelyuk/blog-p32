@@ -1,0 +1,91 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Кошик - InspireBlog{% endblock %}
+
+{% block content %}
+<div class="cart-container" style="max-width: 900px; margin: 2rem auto; padding: 0 1rem;">
+    <h1 style="font-size: 2.25rem; font-weight: 800; color: var(--text-main); margin-bottom: 2rem;">🛒 Ваш кошик</h1>
+
+    {% if cart %}
+        <div style="background-color: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border); box-shadow: var(--shadow-sm); overflow: hidden; margin-bottom: 2rem;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                    <tr style="background-color: var(--border-light); border-bottom: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase;">
+                        <th style="padding: 1rem 1.5rem;">Зображення</th>
+                        <th style="padding: 1rem 1.5rem;">Товар</th>
+                        <th style="padding: 1rem 1.5rem; text-align: center;">Кількість</th>
+                        <th style="padding: 1rem 1.5rem; text-align: right;">Ціна</th>
+                        <th style="padding: 1rem 1.5rem; text-align: right;">Сума</th>
+                        <th style="padding: 1rem 1.5rem; text-align: center;">Видалити</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart %}
+                        {% with product=item.product %}
+                            <tr style="border-bottom: 1px solid var(--border-light); font-size: 0.95rem; color: var(--text-main);">
+                                <td style="padding: 1rem 1.5rem; width: 80px;">
+                                    {% if product.image %}
+                                        <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 60px; height: 60px; object-fit: cover; border-radius: var(--radius-sm);">
+                                    {% else %}
+                                        <div style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; background-color: var(--border-light); border-radius: var(--radius-sm); font-size: 1.5rem;">
+                                            📦
+                                        </div>
+                                    {% endif %}
+                                </td>
+                                <td style="padding: 1rem 1.5rem; font-weight: 600;">
+                                    {{ product.name }}
+                                </td>
+                                <td style="padding: 1rem 1.5rem; text-align: center;">
+                                    <!-- Проста форма для демонстрації оновлення кількості -->
+                                    <form action="{% url 'shop:cart_add' product.id %}" method="post" style="display: inline-flex; align-items: center; gap: 0.5rem;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="override" value="True">
+                                        <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="99" style="width: 50px; padding: 0.3rem; border: 1px solid var(--border); border-radius: var(--radius-sm); text-align: center; font-size: 0.9rem;">
+                                        <button type="submit" class="btn-primary" style="padding: 0.4rem 0.8rem; font-size: 0.75rem; border-radius: var(--radius-sm); border: none; cursor: pointer; box-shadow: none;">
+                                            Оновити
+                                        </button>
+                                    </form>
+                                </td>
+                                <td style="padding: 1rem 1.5rem; text-align: right; color: var(--text-muted);">
+                                    {{ item.price }} грн
+                                </td>
+                                <td style="padding: 1rem 1.5rem; text-align: right; font-weight: 700; color: var(--primary);">
+                                    {{ item.total_price }} грн
+                                </td>
+                                <td style="padding: 1rem 1.5rem; text-align: center;">
+                                    <a href="{% url 'shop:cart_remove' product.id %}" style="color: var(--accent); font-weight: 800; font-size: 1.15rem; text-decoration: none;">&times;</a>
+                                </td>
+                            </tr>
+                        {% endwith %}
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <!-- Загальна сума кошика -->
+            <div style="padding: 1.5rem; background-color: var(--border-light); display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border);">
+                <span style="font-weight: 700; color: var(--text-muted);">Загальна сума:</span>
+                <span style="font-size: 1.5rem; font-weight: 800; color: var(--primary);">{{ cart.get_total_price }} грн</span>
+            </div>
+        </div>
+        
+        <div style="display: flex; justify-content: space-between;">
+            <a href="{% url 'shop:product_list' %}" class="btn-secondary" style="text-decoration: none; border-radius: var(--radius-full);">
+                ⬅️ Продовжити покупки
+            </a>
+            <a href="#" class="btn-primary" style="text-decoration: none; border-radius: var(--radius-full); padding: 0.8rem 2rem;">
+                Оформити замовлення
+            </a>
+        </div>
+    {% else %}
+        <!-- Якщо кошик порожній -->
+        <div class="no-posts-container" style="padding: 4rem 2rem;">
+            <span class="empty-icon">🛒</span>
+            <h3>Кошик порожній</h3>
+            <p>Ви ще не додали жодного товару до кошика.</p>
+            <a href="{% url 'shop:product_list' %}" class="btn-primary" style="text-decoration: none; margin-top: 1rem;">
+                Перейти до товарів
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
